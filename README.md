@@ -11,17 +11,9 @@ Validated on a 7-DOF KUKA LBR iiwa 14 R820 under live external force perturbatio
 
 A side-by-side comparison of the robot tracking a circular trajectory under external force, with and without redundancy optimization:
 
-<!--
-Add your video here once uploaded. Two common options:
 
-1. If hosted on YouTube:
-[![Watch the demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
 
-2. If the video file lives in this repo (e.g. media/demo.mp4), GitHub will render
-   it inline in the README once pushed — just reference it as below:
--->
-
-https://github.com/user-attachments/assets/REPLACE_WITH_YOUR_ASSET_ID
+https://github.com/user-attachments/assets/37490ce3-8a50-4a1d-bb33-5478c2cfc1c5
 
 *Left: baseline configuration (no redundancy exploitation) — torque concentrates on fewer joints.*
 *Right: optimized configuration — null-space motion redistributes load, visibly lowering joint torques.*

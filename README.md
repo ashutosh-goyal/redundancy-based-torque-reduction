@@ -37,37 +37,57 @@ This work instead proposes a **controller-agnostic, trajectory-level** objective
 
 ### The objective function
 
-A force–moment perturbation matrix is built from the sensed/estimated external wrench:
+The Jacobian relates joint velocities to end-effector velocities:
 
-```
-K = diag(|Fx|, |Fy|, |Fz|, |Mx|, |My|, |Mz|)
-```
+$$
+\dot{q} = J^{\dagger}\dot{x}
+$$
 
-and compared against the manipulator's configuration-dependent force ellipsoid $JJ^T$ via a normalized Frobenius distance:
+where $J^{\dagger}$ is the Moore–Penrose pseudoinverse. For a redundant manipulator, $J$ has a non-trivial null space, exploited via the null-space projector $(I_n - J^{\dagger}J)$:
 
-```
-W = || JJᵀ/tr(JJᵀ) − K/tr(K) ||_F
-```
+$$
+q(t+\Delta t) = q(t) + J^{\dagger}\dot{x}\,\Delta t + (I_n - J^{\dagger}J)\,\dot{q}_{\text{opt}}
+$$
+
+A force–moment perturbation matrix is built from the sensed/estimated external wrench acting at the end-effector:
+
+$$
+K = \text{diag}\big(|F_x|,\ |F_y|,\ |F_z|,\ |M_x|,\ |M_y|,\ |M_z|\big)
+$$
+
+and compared against the manipulator's configuration-dependent force ellipsoid $JJ^{T}$ via a trace-normalized Frobenius distance:
+
+$$
+W = \sqrt{\operatorname{tr}\left(\left(\frac{JJ^{T}}{\operatorname{tr}(JJ^{T})} - \frac{K}{\operatorname{tr}(K)}\right)\left(\frac{JJ^{T}}{\operatorname{tr}(JJ^{T})} - \frac{K}{\operatorname{tr}(K)}\right)^{T}\right)}
+$$
 
 **Maximizing** $W$ via gradient ascent in the manipulator's null space:
 
-```
-q̇_opt = G · ∂W/∂q
-```
+$$
+\dot{q}_{\text{opt}} = G\,\frac{\partial W}{\partial q}
+$$
 
-drives the principal axis of the force ellipsoid into alignment with the external perturbation — the configuration that requires the *least* torque to resist or produce that wrench. This update is injected purely through the null-space projector, so the commanded end-effector trajectory is never disturbed:
+where $G > 0$ is the gain factor, drives the principal axis of the force ellipsoid into alignment with the external perturbation — the configuration that requires the *least* torque to resist or produce that wrench. This update is injected purely through the null-space projector, so the commanded end-effector trajectory is never disturbed. With feedback added to suppress integration drift:
 
-```
-q(t+Δt) = q(t) + J†(ẋ_d + Kp·e(t))·Δt + (I − J†J)·q̇_opt
-```
+$$
+q(t+\Delta t) = q(t) + J^{\dagger}\big(\dot{x}_d + K_p\,e(t)\big)\Delta t + (I_n - J^{\dagger}J)\,\dot{q}_{\text{opt}}
+$$
 
-A worked 2-link planar example in the paper shows this clearly: for an identical applied force, some configurations need **zero** joint torque to counteract it, while a singular configuration aligned the wrong way demands the *maximum* torque — the objective function $W$ peaks exactly at the zero-torque configurations.
+$$
+e(t) = x_d(t) - \text{fwd}\big(q(t)\big)
+$$
+
+where $K_p$ is a positive-definite proportional gain, $x_d$ the desired position, and $\text{fwd}(\cdot)$ the forward kinematics map. This guarantees $e(t) \to 0$.
+
+A worked 2-link planar example in the paper shows this clearly: for an identical applied force, some configurations need **zero** joint torque ($\tau = J^{T}P = 0$) to counteract it, while a singular configuration aligned the wrong way demands the *maximum* torque — the objective function $W$ peaks exactly at the zero-torque configurations.
 
 External wrenches are estimated on-line from joint torque residuals via Tikhonov-regularized inversion of the Jacobian:
 
-```
-P̂(t) = (JᵗJ + ηI)⁻¹ Jᵗ τ̂_ext(t)
-```
+$$
+\hat{P}(t) = \big(J^{T}J + \eta I\big)^{-1} J^{T}\,\hat{\tau}_{\text{ext}}(t)
+$$
+
+where $\eta \geq 0$ ensures robust inversion near singularities, and $\hat{\tau}_{\text{ext}}(t)$ is the externally applied joint torque estimated by a disturbance observer.
 
 ---
 
@@ -109,9 +129,6 @@ The small increase in tracking error under optimization comes from the velocity 
 
 
 ---
-
----
-
 ## 📖 Citation
 
 If you use this work, please cite:
@@ -132,3 +149,4 @@ If you use this work, please cite:
 ## 📄 License
 
 This implementation is released under the [MIT License](LICENSE). The associated paper is © 2024 ASME; please respect the journal's copyright when reproducing figures or text from the publication itself.
+

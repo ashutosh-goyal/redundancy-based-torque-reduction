@@ -90,8 +90,6 @@ P̂(t) = (JᵗJ + ηI)⁻¹ Jᵗ τ̂_ext(t)
 | Proportional gain | $K_p = 10\,I_3$ |
 | Null-space gain | $G = 100$ |
 | Time step | $\Delta t = 1/100$ s |
-| Interface | [iiwa-stack](https://github.com/IFL-CAMP/iiwa_stack) (ROS) |
-| Compute | Intel Core i7-7700, 32 GB RAM |
 
 ### Results
 
@@ -114,14 +112,9 @@ The small increase in tracking error under optimization comes from the velocity 
 │   ├── objective_function.py   # W(q), ∂W/∂q
 │   ├── redundancy_resolution.py# Null-space projection + IK integration (Eq. 8)
 │   ├── disturbance_estimation.py # Tikhonov-regularized wrench estimation
-│   └── kuka_interface/         # iiwa-stack / ROS interface glue
-├── simulation/              # 2-link toy example + plots (reproduces Figs. 1–2)
-├── experiments/             # Experiment scripts used on the real KUKA iiwa
-├── results/                 # Logged data, torque/error plots (Figs. 4–6)
 └── README.md
 ```
 
-> Adjust this tree to match what's actually in the repo before pushing — this is a suggested layout based on the structure of the paper.
 
 ---
 
@@ -143,11 +136,6 @@ If you use this work, please cite:
   publisher = {American Society of Mechanical Engineers},
   doi       = {10.1115/1.4064654}
 }
-```
-
----
-
-
 
 ## 📄 License
 

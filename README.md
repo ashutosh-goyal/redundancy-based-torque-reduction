@@ -55,11 +55,13 @@ $$
 K = \text{diag}\big(|F_x|,\ |F_y|,\ |F_z|,\ |M_x|,\ |M_y|,\ |M_z|\big)
 $$
 
-and compared against the manipulator's configuration-dependent force ellipsoid $JJ^{T}$ via a trace-normalized Frobenius distance:
+and compared against the manipulator's configuration-dependent force ellipsoid $JJ^{T}$ via a trace-normalized Frobenius distance. Let:
 
 $$
 A = \frac{JJ^{T}}{\text{tr}(JJ^{T})}, \qquad B = \frac{K}{\text{tr}(K)}
 $$
+
+Then the objective function is:
 
 $$
 W = \sqrt{\text{tr}\big((A - B)(A - B)^{T}\big)}

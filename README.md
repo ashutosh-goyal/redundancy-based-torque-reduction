@@ -58,7 +58,11 @@ $$
 and compared against the manipulator's configuration-dependent force ellipsoid $JJ^{T}$ via a trace-normalized Frobenius distance:
 
 $$
-W = \sqrt{\operatorname{tr}\left(\left(\frac{JJ^{T}}{\operatorname{tr}(JJ^{T})} - \frac{K}{\operatorname{tr}(K)}\right)\left(\frac{JJ^{T}}{\operatorname{tr}(JJ^{T})} - \frac{K}{\operatorname{tr}(K)}\right)^{T}\right)}
+A = \frac{JJ^{T}}{\text{tr}(JJ^{T})}, \qquad B = \frac{K}{\text{tr}(K)}
+$$
+
+$$
+W = \sqrt{\text{tr}\big((A - B)(A - B)^{T}\big)}
 $$
 
 **Maximizing** $W$ via gradient ascent in the manipulator's null space:

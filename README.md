@@ -15,8 +15,8 @@ A side-by-side comparison of the robot tracking a circular trajectory under exte
 
 https://github.com/user-attachments/assets/37490ce3-8a50-4a1d-bb33-5478c2cfc1c5
 
-*Left: baseline configuration (no redundancy exploitation) — torque concentrates on fewer joints.*
-*Right: optimized configuration — null-space motion redistributes load, visibly lowering joint torques.*
+*Right: baseline configuration (no redundancy exploitation) — torque concentrates on fewer joints.*
+*Left: optimized configuration — null-space motion redistributes load, visibly lowering joint torques.*
 
 ---
 
